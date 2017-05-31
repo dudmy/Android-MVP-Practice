@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Android-MVP-Practice</string>
+    <string name="post_detail">Post Detail</string>
+</resources>

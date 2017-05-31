@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="post"
+            type="net.dudmy.android_mvp_practice.data.Post" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="?android:attr/selectableItemBackground">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="@{post.title}"
+            tools:text="Post Name" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBaseline="@id/tv_title"
+            android:textSize="14sp"
+            android:text="@{post.date.toString()}"
+            tools:text="2017.05.31" />
+
+    </RelativeLayout>
+</layout>
