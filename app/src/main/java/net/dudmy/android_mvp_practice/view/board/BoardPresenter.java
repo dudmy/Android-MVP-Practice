@@ -1,14 +1,18 @@
 package net.dudmy.android_mvp_practice.view.board;
 
 import net.dudmy.android_mvp_practice.data.Post;
-import net.dudmy.android_mvp_practice.data.source.PostDataSource;
 import net.dudmy.android_mvp_practice.data.source.PostRepository;
 import net.dudmy.android_mvp_practice.listener.OnItemClickListener;
+import net.dudmy.android_mvp_practice.utils.SchedulerProvider;
 import net.dudmy.android_mvp_practice.view.board.adapter.BoardAdapterContract;
 
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
 
 /**
  * Created by yujin on 2017. 5. 31..
@@ -20,6 +24,11 @@ public class BoardPresenter implements BoardContract.Presenter, OnItemClickListe
     private final BoardAdapterContract.View adapterView;
     private final BoardAdapterContract.Model adapterModel;
     private final PostRepository repository;
+
+    private CompositeDisposable disposable = new CompositeDisposable();
+
+    @Inject
+    SchedulerProvider schedulerProvider;
 
     @Inject
     public BoardPresenter(BoardContract.View view, BoardAdapterContract.View adapterView,
@@ -35,50 +44,49 @@ public class BoardPresenter implements BoardContract.Presenter, OnItemClickListe
     @Override
     public void detachView() {
         this.view = null;
+        disposable.clear();
     }
 
     @Override
     public void loadPosts() {
-        repository.getPosts(new PostDataSource.LoadPostsCallback() {
-            @Override
-            public void onPostsLoaded(List<Post> posts) {
-                if (view != null) {
-                    view.setPlaceholder(false);
-                    adapterModel.addItems(posts);
-                    adapterView.refresh();
-                }
-            }
+        disposable.add(repository.getPosts()
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribeWith(new DisposableObserver<List<Post>>() {
+                    @Override
+                    public void onNext(@NonNull List<Post> posts) {
+                        adapterModel.addItems(posts);
+                        adapterView.refresh();
+                    }
 
-            @Override
-            public void onDataNotAvailable() {
-                if (view != null) {
-                    view.setPlaceholder(true);
-                }
-            }
-        });
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        view.setPlaceholder(adapterModel.size() == 0);
+                    }
+                }));
     }
 
     @Override
     public void addPost(String title, String content, String name) {
         if (title.isEmpty()) {
             view.toastEnterTitle();
-            return;
-        }
-
-        if (content.isEmpty()) {
+        } else if (content.isEmpty()) {
             view.toastEnterContent();
-            return;
+        } else {
+            Post post = new Post(title, content, name);
+
+            repository.savePost(post);
+
+            adapterModel.addItem(post);
+            adapterView.refresh();
+
+            view.setPlaceholder(false);
+            view.showSavedMessage();
         }
-
-        Post post = new Post(title, content, name);
-
-        repository.savePost(post);
-
-        adapterModel.addItem(post);
-        adapterView.refresh();
-
-        view.setPlaceholder(false);
-        view.showSavedMessage();
     }
 
     @Override

@@ -18,6 +18,8 @@ public interface BoardAdapterContract {
         void addItem(Post post);
 
         void addItems(List<Post> posts);
+
+        int size();
     }
 
     interface View {

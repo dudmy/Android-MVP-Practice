@@ -50,6 +50,11 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
     }
 
     @Override
+    public int size() {
+        return getItemCount();
+    }
+
+    @Override
     public Post getItem(int position) {
         return posts.get(position);
     }

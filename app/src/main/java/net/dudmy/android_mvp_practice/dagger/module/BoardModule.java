@@ -1,5 +1,6 @@
 package net.dudmy.android_mvp_practice.dagger.module;
 
+import net.dudmy.android_mvp_practice.utils.SchedulerProvider;
 import net.dudmy.android_mvp_practice.view.board.BoardContract;
 import net.dudmy.android_mvp_practice.view.board.BoardPresenter;
 import net.dudmy.android_mvp_practice.view.board.adapter.BoardAdapter;
@@ -41,5 +42,10 @@ public class BoardModule {
     @Provides
     BoardContract.View provideBoardView() {
         return view;
+    }
+
+    @Provides
+    SchedulerProvider provideSchedulerProvider() {
+        return SchedulerProvider.getInstance();
     }
 }

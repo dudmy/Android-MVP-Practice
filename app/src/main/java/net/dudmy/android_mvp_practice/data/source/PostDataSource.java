@@ -4,29 +4,17 @@ import net.dudmy.android_mvp_practice.data.Post;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+
 /**
  * Created by yujin on 2017. 5. 31..
  */
 
 public interface PostDataSource {
 
-    interface LoadPostsCallback {
+    Observable<List<Post>> getPosts();
 
-        void onPostsLoaded(List<Post> posts);
-
-        void onDataNotAvailable();
-    }
-
-    interface LoadPostCallback {
-
-        void onPostLoaded(Post post);
-
-        void onDataNotAvailable();
-    }
-
-    void getPosts(LoadPostsCallback callback);
-
-    void getPost(String id, LoadPostCallback callback);
+    Observable<Post> getPost(String id);
 
     void savePost(Post post);
 

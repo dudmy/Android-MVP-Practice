@@ -1,5 +1,6 @@
 package net.dudmy.android_mvp_practice.dagger.module;
 
+import net.dudmy.android_mvp_practice.utils.SchedulerProvider;
 import net.dudmy.android_mvp_practice.view.post.PostContract;
 import net.dudmy.android_mvp_practice.view.post.PostPresenter;
 
@@ -27,5 +28,10 @@ public class PostModule {
     @Provides
     PostContract.Presenter providePostPresenter(PostPresenter postPresenter) {
         return postPresenter;
+    }
+
+    @Provides
+    SchedulerProvider provideSchedulerProvider() {
+        return SchedulerProvider.getInstance();
     }
 }
