@@ -1,6 +1,5 @@
 package net.dudmy.android_mvp_practice.view.board;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -105,18 +104,11 @@ public class BoardActivity extends AppCompatActivity implements BoardContract.Vi
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
                 .setMessage("게시글 작성")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        boardPresenter.addPost(dialogBinding.edtTitle.getText().toString(), dialogBinding.edtContent.getText().toString(), dialogBinding.edtName.getText().toString());
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> boardPresenter.addPost(
+                        dialogBinding.edtTitle.getText().toString(),
+                        dialogBinding.edtContent.getText().toString(),
+                        dialogBinding.edtName.getText().toString()))
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .show();
     }
 }

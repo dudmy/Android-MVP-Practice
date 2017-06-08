@@ -90,12 +90,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
             super(itemView);
             binding = DataBindingUtil.bind(itemView);
 
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemClickListener.onItemClick(getAdapterPosition());
-                }
-            });
+            binding.getRoot().setOnClickListener(v -> itemClickListener.onItemClick(getAdapterPosition()));
         }
     }
 }
