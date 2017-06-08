@@ -4,4 +4,4 @@ This is practice project about the MVP(Model-View-Presenter) pattern by referrin
 the [google android architecture samples](https://github.com/googlesamples/android-architecture/).
 
 ## What I Use ?
-**Dagger2** + **DataBinding** + **Realm**
+**Dagger2** + **DataBinding** + **Realm** + **RxJava**
